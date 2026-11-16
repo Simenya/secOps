@@ -1,0 +1,6 @@
+# secrets never go in the repo
+.env
+*.env
+secrets/
+*.key
+~$*.docx
