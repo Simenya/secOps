@@ -14,8 +14,8 @@ command or query, the file the output is saved to, and who (which agent) ran it.
 |---|------|--------|
 | 1 | Does `apkit-secops` = `pdp-analyzer-02` / 172.29.108.118? | Unknown — resolved by step 1.1 |
 | 2 | Red Team time window (exact dates/times, timezone) | Needed — report only says "October 2026" |
-| 3 | Attacker source IP as seen by the target (Kali VM 172.21.59.44 is behind Hyper-V NAT, so the SIEM will show the Windows host's VPN address) | Needed — step 1.2 derives it |
-| 4 | Reporting Template .docx from Canvas | **To be uploaded** to `inputs/` |
+| 3 | Attacker source IP as seen by the target (the Red Team ran from a Hyper-V Kali VM behind NAT, so the SIEM shows that Windows host's VPN address, not 172.21.59.44) | Needed — step 1.2 derives it |
+| 4 | Reporting Template | Received (PDF); outline in `report/outline.md` |
 | 5 | Upanzi Ubuntu hardening scripts from Canvas | **Blocker for Phase 5** — put in `inputs/hardening-scripts/` |
 | 6 | Past engagement folder structure (`/mnt/EXT/backup/Fall 2026/CyberOps/engagement/`) | Not readable from cloud; run `tree -L 3` there and save to `inputs/engagement-tree.txt` |
 | 7 | Exact OpenClaw CLI flags on the installed version | Verified by `agents/setup-openclaw.sh` (prints `openclaw --version` and help) |
@@ -42,8 +42,8 @@ every run is logged to `evidence/05-agent-runs/` (prompt, model, output, timesta
 
 ### Phase 0 — Setup (human + Commander)
 - 0.1 Connect to CMU VPN; confirm reachability of SIEM (172.29.108.82:5601), Wazuh (172.29.111.20), AI gateway.
-- 0.2 Windows host: `agents/windows-ollama.ps1` (binds Ollama to the Hyper-V switch only, pulls the model).
-- 0.3 Kali VM: `agents/setup-openclaw.sh` — prompts for the gateway API key (hidden input, stored in `~/.config/secops/agents.env`, mode 600, never in the repo), registers the three providers/models, runs a text probe and a tool probe per model, writes `evidence/00-setup/`.
+- 0.2 `agents/setup-ollama.sh` (installs/starts Ollama on the Kali machine, bound to 127.0.0.1, pulls Qwen3 1.7B).
+- 0.3 `agents/setup-openclaw.sh` — prompts for the gateway API key (hidden input, stored in `~/.config/secops/agents.env`, mode 600, never in the repo), registers the three providers/models, runs a text probe and a tool probe per model, writes `evidence/00-setup/`.
 - Exit criteria: three probes pass (or the failure is recorded and routing adjusted).
 
 ### Phase 1 — Scoping (Commander; A1 for exports)

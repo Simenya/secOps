@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Sets up the three OpenClaw model backends for the Blue Team assignment and
-# records evidence of the setup. Run on the Kali VM, connected to CMU VPN.
+# records evidence of the setup. Run on the Kali machine, connected to CMU VPN.
 #   ./agents/setup-openclaw.sh
 # Keys are read with hidden input and stored only in ~/.config/secops/agents.env (0600).
 set -euo pipefail
@@ -12,10 +12,10 @@ LOG="$EV/setup-$(date -u +%Y%m%dT%H%M%SZ).log"
 exec > >(tee "$LOG") 2>&1
 
 GATEWAY_URL="${GATEWAY_URL:-https://ai-gateway.andrew.cmu.edu/v1}"
-OLLAMA_URL="${OLLAMA_URL:-http://172.21.48.1:11434/v1}"
+OLLAMA_URL="${OLLAMA_URL:-http://127.0.0.1:11434/v1}"
 HAIKU_ID="${HAIKU_ID:-claude-haiku-4-5}"      # adjust to the id shown by the gateway model list below
 SONNET_ID="${SONNET_ID:-claude-sonnet-5}"
-QWEN_ID="${QWEN_ID:-qwen1.7b-8k:latest}"
+QWEN_ID="${QWEN_ID:-qwen3:1.7b}"
 
 echo "== versions =="; date -u; uname -a
 command -v openclaw >/dev/null || { echo "openclaw not installed"; exit 1; }
